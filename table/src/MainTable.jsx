@@ -34,10 +34,10 @@ class MainTable extends Component {
 
 	sortStringColumn(a, colIndex){
 	    a.sort((a, b) => {
-	    	if (a < b) {
+	    	if (a[colIndex] < b[colIndex]) {
 				return -1;
 			}
-			if (a > b) {
+			if (a[colIndex] > b[colIndex]) {
 				return 1;
 			}
 			return 0

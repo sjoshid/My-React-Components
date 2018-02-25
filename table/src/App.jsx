@@ -13,9 +13,7 @@ class App extends Component {
           <img src={logo} className="App-logo" alt="logo" />
           <h1 className="App-title">{1 + 2}</h1>
         </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> 2 and save to reload. Bonkers!
-        </p>
+        
         <MainTable tableMetaData = {tableMetaData} />
       </div>
     );

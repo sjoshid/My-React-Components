@@ -8,6 +8,9 @@ const tableData = [
   ], [
     7,
     'c'
+  ], [
+    9,
+    'A'
   ]
 ];
 
