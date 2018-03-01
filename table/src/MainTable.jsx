@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
-import './App.css';
-import tableData from './sampleTableData';
+import './css/App.css';
 import Rows from './Rows.jsx';
 import Header from './Header.jsx';
 
 class MainTable extends Component {
 	constructor(props) {
 	    super(props);
-	    this.state = {'tableData': tableData};
+	    this.state = {'tableData': this.props.tableData};
 	    this.sortColumnHandler = this.sortColumnHandler.bind(this);
 	    this.sortNumberCol = this.sortNumberCol.bind(this);
 	    this.sortStringColumn = this.sortStringColumn.bind(this);
@@ -49,10 +48,12 @@ class MainTable extends Component {
 	render() {
 		const tableMetaData = this.props.tableMetaData; // <<=== This metadata should come from props?
 		const tableData = this.state.tableData;
-    	return <div>
+    	return <div align="center">
     		<table border='1'>
-    			<Header headerData = {tableMetaData} sortColumnHandler = {this.sortColumnHandler}/>
-    			{tableData.map(d => <Rows rowData = {d} />)}
+					<tbody>
+	    			<Header headerData = {tableMetaData} sortColumnHandler = {this.sortColumnHandler}/>
+	    			{tableData.map(d => <Rows rowData = {d} />)}
+					</tbody>
     		</table>
     	</div>;
     }
