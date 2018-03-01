@@ -12,6 +12,35 @@ class MainTable extends Component {
 	    this.sortStringColumn = this.sortStringColumn.bind(this);
 	 }
 
+  componentWillMount() {
+    console.log("main table componentWillMount");
+  }
+
+  componentDidMount() {
+    console.log("main table componentDidMount");
+  }
+
+  componentWillReceiveProps(nextProps) {
+    console.log("main table componentWillReceiveProps. Updating state..");
+		this.setState({'tableData': nextProps.tableData}); //We will always get new data so diff between nextProps and current props is NOT required.
+  }
+
+  componentWillUpdate(nextProps, nextState) {
+    console.log("main table componentWillUpdate");
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    console.log("main table componentDidUpdate");
+  }
+
+  componentWillUnmount() {
+    console.log("main table componentWillUnmount");
+  }
+
+  componentDidCatch(error, info) {
+    console.log("main table componentDidCatch");
+  }
+
 	sortColumnHandler(e) {
 	 	let columnIndex = e.currentTarget.attributes.columnIndex.value;
 	 	const tableMetaData = this.props.tableMetaData;

@@ -3,28 +3,20 @@ import React, { Component } from 'react';
 class Paginator extends Component {
 	constructor(props) {
 	    super(props);
-      this.state = {'currentIndex': 0};
       this.nextPage = this.nextPage.bind(this);
       this.previousPage = this.previousPage.bind(this);
 	 }
 
   nextPage(e) {
-    const currentIndex = this.state.currentIndex;
     const pageSize = this.props.pagesize;
-    const newIndex = currentIndex + pageSize;
-    this.setState({'currentIndex': newIndex});
+    const newIndex = this.props.currentindex + pageSize;
     this.props.updatepage(newIndex);
   }
 
   previousPage(e) {
-    const currentIndex = this.state.currentIndex;
     const pageSize = this.props.pagesize;
-    const newIndex = currentIndex - pageSize;
-
-    if(newIndex >= 0) {
-      this.setState({'currentIndex': newIndex});
-      this.props.updatepage(newIndex);
-    }
+    const newIndex = this.props.currentindex - pageSize;
+    this.props.updatepage(newIndex);
   }
 
 	render() {

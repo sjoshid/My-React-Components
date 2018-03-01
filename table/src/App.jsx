@@ -8,17 +8,43 @@ import tableDataFromResource from './resources/sampleTableData';
 class App extends Component {
 	constructor(props) {
 	    super(props);
-	    this.state = {'pagesize': 3, 'tableData': {tableDataFromResource}};
+	    this.state = {'pagesize': 3, 'tableData': tableDataFromResource.slice(0, 3), 'currentIndex': 0};
       this.updatePage = this.updatePage.bind(this);
 	 }
 
   componentWillMount() {
-    this.setState({'tableData': tableDataFromResource.slice(0, this.state.pagesize)});
+    console.log("componentWillMount");
+  }
+
+  componentDidMount() {
+    console.log("componentDidMount");
+  }
+
+  componentWillReceiveProps(nextProps) {
+    console.log("componentWillReceiveProps");
+  }
+
+  componentWillUpdate(nextProps, nextState) {
+    console.log("componentWillUpdate");
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    console.log("componentDidUpdate");
+  }
+
+  componentWillUnmount() {
+    console.log("componentWillUnmount");
+  }
+
+  componentDidCatch(error, info) {
+    console.log("componentDidCatch");
   }
 
   updatePage(startIndex) {
-    const endIndex = startIndex + this.state.pagesize;
-    this.setState({'tableData': tableDataFromResource.slice(startIndex, endIndex)});
+    if(startIndex >= 0 && startIndex < tableDataFromResource.length) {
+      const endIndex = startIndex + this.state.pagesize;
+      this.setState({'tableData': tableDataFromResource.slice(startIndex, Math.min(endIndex, tableDataFromResource.length - 1)), 'currentIndex': startIndex});
+    }
   }
 
   render() {
@@ -31,7 +57,7 @@ class App extends Component {
         </header>
 
         <MainTable tableMetaData = {tableMetaData} tableData = {this.state.tableData}/>
-        <Paginator pagesize = {this.state.pagesize} updatepage = {this.updatePage}/>
+        <Paginator pagesize = {this.state.pagesize} updatepage = {this.updatePage} currentindex = {this.state.currentIndex}/>
       </div>
     );
   }
