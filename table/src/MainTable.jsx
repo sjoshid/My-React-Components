@@ -13,32 +13,32 @@ class MainTable extends Component {
 	 }
 
   componentWillMount() {
-    console.log("main table componentWillMount");
+    //console.log("main table componentWillMount");
   }
 
   componentDidMount() {
-    console.log("main table componentDidMount");
+    //console.log("main table componentDidMount");
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log("main table componentWillReceiveProps. Updating state..");
+    //console.log("main table componentWillReceiveProps. Updating state..");
 		this.setState({'tableData': nextProps.tableData}); //We will always get new data so diff between nextProps and current props is NOT required.
   }
 
   componentWillUpdate(nextProps, nextState) {
-    console.log("main table componentWillUpdate");
+    //console.log("main table componentWillUpdate");
   }
 
   componentDidUpdate(prevProps, prevState) {
-    console.log("main table componentDidUpdate");
+    //console.log("main table componentDidUpdate");
   }
 
   componentWillUnmount() {
-    console.log("main table componentWillUnmount");
+    //console.log("main table componentWillUnmount");
   }
 
   componentDidCatch(error, info) {
-    console.log("main table componentDidCatch");
+    //console.log("main table componentDidCatch");
   }
 
 	sortColumnHandler(e) {

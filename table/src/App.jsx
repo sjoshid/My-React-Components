@@ -10,40 +10,65 @@ class App extends Component {
 	    super(props);
 	    this.state = {'pagesize': 3, 'tableData': tableDataFromResource.slice(0, 3), 'currentIndex': 0};
       this.updatePage = this.updatePage.bind(this);
+			this.nextPage = this.nextPage.bind(this);
+			this.previousPage = this.previousPage.bind(this);
+			this.firstPage = this.firstPage.bind(this);
+			this.lastPage = this.lastPage.bind(this);
 	 }
 
   componentWillMount() {
-    console.log("componentWillMount");
+    //console.log("componentWillMount");
   }
 
   componentDidMount() {
-    console.log("componentDidMount");
+    //console.log("componentDidMount");
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log("componentWillReceiveProps");
+    //console.log("componentWillReceiveProps");
   }
 
   componentWillUpdate(nextProps, nextState) {
-    console.log("componentWillUpdate");
+    //console.log("componentWillUpdate");
   }
 
   componentDidUpdate(prevProps, prevState) {
-    console.log("componentDidUpdate");
+    //console.log("componentDidUpdate");
   }
 
   componentWillUnmount() {
-    console.log("componentWillUnmount");
+    //console.log("componentWillUnmount");
   }
 
   componentDidCatch(error, info) {
-    console.log("componentDidCatch");
+    //console.log("componentDidCatch");
   }
+
+	nextPage(e) {
+		 const pageSize = this.state.pagesize;
+		 const newIndex = this.state.currentIndex + pageSize;
+		 this.updatePage(newIndex);
+	}
+
+	previousPage(e) {
+		 const pageSize = this.state.pagesize;
+		 const newIndex = this.state.currentIndex - pageSize;
+		 this.updatePage(newIndex);
+	}
+
+	firstPage(e) {
+		this.updatePage(0);
+	}
+
+	lastPage(e) {
+		const newIndex = Math.ceil((tableDataFromResource.length / this.state.pagesize) - 1) * this.state.pagesize;
+		this.updatePage(newIndex);
+	}
 
   updatePage(startIndex) {
     if(startIndex >= 0 && startIndex < tableDataFromResource.length) {
       const endIndex = startIndex + this.state.pagesize;
-      this.setState({'tableData': tableDataFromResource.slice(startIndex, Math.min(endIndex, tableDataFromResource.length - 1)), 'currentIndex': startIndex});
+      this.setState({'tableData': tableDataFromResource.slice(startIndex, Math.min(endIndex, tableDataFromResource.length)), 'currentIndex': startIndex});
     }
   }
 
@@ -53,11 +78,11 @@ class App extends Component {
       <div className="App">
         <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">{1 + 2}</h1>
+          <h1 className="App-title">Table Component in React</h1>
         </header>
 
         <MainTable tableMetaData = {tableMetaData} tableData = {this.state.tableData}/>
-        <Paginator pagesize = {this.state.pagesize} updatepage = {this.updatePage} currentindex = {this.state.currentIndex}/>
+        <Paginator pagesize = {this.state.pagesize} nextPage = {this.nextPage} previousPage = {this.previousPage} firstPage = {this.firstPage} lastPage = {this.lastPage} currentindex = {this.state.currentIndex}/>
       </div>
     );
   }
