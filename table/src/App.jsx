@@ -45,15 +45,13 @@ class App extends Component {
   }
 
 	nextPage(e) {
-		 const pageSize = this.state.pagesize;
-		 const newIndex = this.state.currentIndex + pageSize;
-		 this.updatePage(newIndex);
+    const newIndex = this.state.currentIndex + this.state.pagesize;
+		this.updatePage(newIndex);
 	}
 
 	previousPage(e) {
-		 const pageSize = this.state.pagesize;
-		 const newIndex = this.state.currentIndex - pageSize;
-		 this.updatePage(newIndex);
+    const newIndex = this.state.currentIndex - this.state.pagesize;
+		this.updatePage(newIndex);
 	}
 
 	firstPage(e) {
@@ -82,7 +80,7 @@ class App extends Component {
         </header>
 
         <MainTable tableMetaData = {tableMetaData} tableData = {this.state.tableData}/>
-        <Paginator pagesize = {this.state.pagesize} nextPage = {this.nextPage} previousPage = {this.previousPage} firstPage = {this.firstPage} lastPage = {this.lastPage} currentindex = {this.state.currentIndex}/>
+        <Paginator nextPage = {this.nextPage} previousPage = {this.previousPage} firstPage = {this.firstPage} lastPage = {this.lastPage} />
       </div>
     );
   }
