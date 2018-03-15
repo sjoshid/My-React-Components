@@ -98,20 +98,20 @@ class App extends Component {
 	}
 
 	firstPage(e) {
-		this.updatePage(0);
+		this.updatePage(0, true, false);
 	}
 
 	lastPage(e) {
 		const newIndex = Math.ceil((tableDataFromResource.length / this.state.pagesize) - 1) * this.state.pagesize;
-		this.updatePage(newIndex);
+		this.updatePage(newIndex, true, true);
   }
   
   turnPage(e) {
     const pageIndex = e.currentTarget.attributes.index.value;
-    this.updatePage(+pageIndex);
+    this.updatePage(+pageIndex, false);
   }
 
-  updatePage(startIndex, reIndex = false, page = null) {
+  updatePage(startIndex, reIndex = true, page = null) {
     if(startIndex >= 0 && startIndex < tableDataFromResource.length) {
       const endIndex = startIndex + this.state.pagesize;
       let newIndexes = this.state.indexes;
@@ -131,7 +131,7 @@ class App extends Component {
         </header>
 
         <MainTable tableMetaData = {tableMetaData} tableData = {this.state.tableData}/>
-        <Paginator indexesData={this.state.indexes} nextPage={this.nextPage} previousPage={this.previousPage} firstPage={this.firstPage} lastPage={this.lastPage} turnPage={this.turnPage}/>
+        <Paginator pageSize={this.state.pagesize} indexesData={this.state.indexes} nextPage={this.nextPage} previousPage={this.previousPage} firstPage={this.firstPage} lastPage={this.lastPage} turnPage={this.turnPage}/>
       </div>
     );
   }
