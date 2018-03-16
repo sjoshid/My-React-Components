@@ -5,10 +5,13 @@ import MainTable from './MainTable.jsx';
 import Paginator from './Paginator.jsx';
 import tableDataFromResource from './resources/sampleTableData';
 
+const pagesToShow = 3; //Maybe we can read this value from a config file or something,
+const pageSize = 3; //This one too.
+
 class App extends Component {
 	constructor(props) {
 	    super(props);
-	    this.state = {'pagesize': 3, 'tableData': tableDataFromResource.slice(0, 3), 'currentIndex': 0, 'indexes': [0, 3, 6]};
+      this.state = { 'tableData': tableDataFromResource.slice(0, pageSize), 'indexes': [0, 3, 6]};
       this.updatePage = this.updatePage.bind(this);
 			this.nextPage = this.nextPage.bind(this);
 			this.previousPage = this.previousPage.bind(this);
@@ -50,14 +53,14 @@ class App extends Component {
     let currentIndex = existingIndexes[existingIndexes.length - 1];
     let newIndexes = [];
     let i = 0;
-    while (i++ < existingIndexes.length) {
-      const ind = currentIndex + this.state.pagesize;
+    while (i++ < pagesToShow) {
+      const ind = currentIndex + pageSize;
 
       if (ind < tableDataFromResource.length) {
         newIndexes.push(ind);
         currentIndex = ind;
       } else {
-        break;
+        newIndexes.push(-1); //invalid to buffer up
       }
     }
 
@@ -68,9 +71,9 @@ class App extends Component {
     const existingIndexes = this.state.indexes;
     let currentIndex = existingIndexes[0];
     let newIndexes = [];
-    let i = 3; //This 3 will be some constant. it is better we buffer existingIndexes for easier calculations.
+    let i = pagesToShow;
     while (i-- > 0) {
-      const ind = currentIndex - this.state.pagesize;
+      const ind = currentIndex - pageSize;
       newIndexes[i] = ind;
       currentIndex = ind;
     }
@@ -78,23 +81,28 @@ class App extends Component {
     return newIndexes;
   }
 
-  calculateIndexes(isNextPageIndexes) {
-
-    if (isNextPageIndexes) {
-      return this.calculateNextPageIndexes();
-    } else {
-      return this.calculatePreviousPageIndexes();
-    }
-  }
-
 	nextPage(e) {
-    const newIndex = this.state.indexes[this.state.indexes.length - 1] + this.state.pagesize;
-		//this.updatePage(newIndex, true, true);
+    const lastIndex = this.state.indexes[this.state.indexes.length - 1];
+    if(lastIndex !== -1) {
+      let nextIndexes = this.calculateNextPageIndexes();
+      this.setState({ 'indexes': nextIndexes });
+      
+      let nextPageFirstIndex = nextIndexes[0];
+      if (nextPageFirstIndex !== -1) {
+        this.updatePage(nextPageFirstIndex);
+      }
+    }
 	}
 
 	previousPage(e) {
-    const newIndex = this.state.indexes[0] - ( 3 * this.state.pagesize); //this 3 should be a constant. 
-		//this.updatePage(newIndex, true, false);
+    const firstIndex = this.state.indexes[0];
+    if (firstIndex !== 0) {
+      let previousIndexes = this.calculatePreviousPageIndexes();
+      this.setState({ 'indexes': previousIndexes });
+      
+      let lastIndexOfPreviousPage = previousIndexes[previousIndexes.length - 1];
+      this.updatePage(lastIndexOfPreviousPage);
+    }
 	}
 
 	firstPage(e) {
@@ -102,7 +110,7 @@ class App extends Component {
 	}
 
 	lastPage(e) {
-		const newIndex = Math.ceil((tableDataFromResource.length / this.state.pagesize) - 1) * this.state.pagesize;
+		const newIndex = Math.ceil((tableDataFromResource.length / pageSize) - 1) * pageSize;
 		this.updatePage(newIndex);
   }
   
@@ -113,8 +121,8 @@ class App extends Component {
 
   updatePage(startIndex) {
     if(startIndex >= 0 && startIndex < tableDataFromResource.length) {
-      const endIndex = startIndex + this.state.pagesize;
-      this.setState({ 'tableData': tableDataFromResource.slice(startIndex, Math.min(endIndex, tableDataFromResource.length)), 'currentIndex': startIndex});
+      const endIndex = startIndex + pageSize;
+      this.setState({'tableData': tableDataFromResource.slice(startIndex, Math.min(endIndex, tableDataFromResource.length))});
     }
   }
 
@@ -128,7 +136,7 @@ class App extends Component {
         </header>
 
         <MainTable tableMetaData = {tableMetaData} tableData = {this.state.tableData}/>
-        <Paginator pageSize={this.state.pagesize} indexesData={this.state.indexes} nextPage={this.nextPage} previousPage={this.previousPage} firstPage={this.firstPage} lastPage={this.lastPage} turnPage={this.turnPage}/>
+        <Paginator pageSize={pageSize} indexesData={this.state.indexes} nextPage={this.nextPage} previousPage={this.previousPage} firstPage={this.firstPage} lastPage={this.lastPage} turnPage={this.turnPage}/>
       </div>
     );
   }
