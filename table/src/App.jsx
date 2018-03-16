@@ -89,35 +89,32 @@ class App extends Component {
 
 	nextPage(e) {
     const newIndex = this.state.indexes[this.state.indexes.length - 1] + this.state.pagesize;
-		this.updatePage(newIndex, true, true);
+		//this.updatePage(newIndex, true, true);
 	}
 
 	previousPage(e) {
     const newIndex = this.state.indexes[0] - ( 3 * this.state.pagesize); //this 3 should be a constant. 
-		this.updatePage(newIndex, true, false);
+		//this.updatePage(newIndex, true, false);
 	}
 
 	firstPage(e) {
-		this.updatePage(0, true, false);
+		this.updatePage(0);
 	}
 
 	lastPage(e) {
 		const newIndex = Math.ceil((tableDataFromResource.length / this.state.pagesize) - 1) * this.state.pagesize;
-		this.updatePage(newIndex, true, true);
+		this.updatePage(newIndex);
   }
   
   turnPage(e) {
     const pageIndex = e.currentTarget.attributes.index.value;
-    this.updatePage(+pageIndex, false);
+    this.updatePage(+pageIndex);
   }
 
-  updatePage(startIndex, reIndex = true, page = null) {
+  updatePage(startIndex) {
     if(startIndex >= 0 && startIndex < tableDataFromResource.length) {
       const endIndex = startIndex + this.state.pagesize;
-      let newIndexes = this.state.indexes;
-      if(reIndex)
-        newIndexes = this.calculateIndexes(page);
-      this.setState({ 'tableData': tableDataFromResource.slice(startIndex, Math.min(endIndex, tableDataFromResource.length)), 'currentIndex': startIndex, 'indexes': newIndexes});
+      this.setState({ 'tableData': tableDataFromResource.slice(startIndex, Math.min(endIndex, tableDataFromResource.length)), 'currentIndex': startIndex});
     }
   }
 
