@@ -84,10 +84,10 @@ class App extends Component {
     const lastIndex = this.state.indexes[this.state.indexes.length - 1];
     if(lastIndex !== -1) {
       let nextIndexes = this.calculateNextPageIndexes(lastIndex);
-      this.setState({ 'indexes': nextIndexes });
       
       let nextPageFirstIndex = nextIndexes[0];
-      if (nextPageFirstIndex !== -1) {
+      if (nextPageFirstIndex !== -1) {        
+        this.setState({ 'indexes': nextIndexes });
         this.updatePage(nextPageFirstIndex);
       }
     }
