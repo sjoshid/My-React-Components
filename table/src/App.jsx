@@ -48,9 +48,8 @@ class App extends Component {
     //console.log("componentDidCatch");
   }
 
-  calculateNextPageIndexes() {
-    const existingIndexes = this.state.indexes;
-    let currentIndex = existingIndexes[existingIndexes.length - 1];
+  calculateNextPageIndexes(lastIndexOfCurrentPage) {
+    let currentIndex = lastIndexOfCurrentPage;
     let newIndexes = [];
     let i = 0;
     while (i++ < pagesToShow) {
@@ -84,7 +83,7 @@ class App extends Component {
 	nextPage(e) {
     const lastIndex = this.state.indexes[this.state.indexes.length - 1];
     if(lastIndex !== -1) {
-      let nextIndexes = this.calculateNextPageIndexes();
+      let nextIndexes = this.calculateNextPageIndexes(lastIndex);
       this.setState({ 'indexes': nextIndexes });
       
       let nextPageFirstIndex = nextIndexes[0];
@@ -106,12 +105,24 @@ class App extends Component {
 	}
 
 	firstPage(e) {
+    let nextIndexes = this.calculateNextPageIndexes(-3);
+    this.setState({ 'indexes': nextIndexes });
 		this.updatePage(0);
 	}
 
 	lastPage(e) {
-		const newIndex = Math.ceil((tableDataFromResource.length / pageSize) - 1) * pageSize;
-		this.updatePage(newIndex);
+    const totalRecords = pageSize * pagesToShow;
+    const remainder = tableDataFromResource.length % totalRecords;
+    if(remainder !== 0) {
+      let firstIndexOfLastPage = tableDataFromResource.length - remainder;
+      let nextIndexes = this.calculateNextPageIndexes(firstIndexOfLastPage - pageSize);
+      this.setState({ 'indexes': nextIndexes });
+      this.updatePage(nextIndexes[0]);
+    } else {
+      let nextIndexes = this.calculateNextPageIndexes(tableDataFromResource.length - totalRecords - pageSize);
+      this.setState({ 'indexes': nextIndexes });
+      this.updatePage(nextIndexes[0]);
+    }
   }
   
   turnPage(e) {
